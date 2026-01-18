@@ -28,7 +28,6 @@ app.use("/api/coupon", couponroutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-// serve frontend (Vite build)
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "frontend/vite-project/dist")));
 
