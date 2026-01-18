@@ -20,6 +20,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
+const __dirname = path.resolve();
+
 // api routes
 app.use("/api/auth", authroutes);
 app.use("/api/products", productroutes);
@@ -30,8 +32,6 @@ app.use("/api/analytics", analyticsRoutes);
 
 // SADECE PRODUCTION'DA FRONTEND SERVE ET
 if (process.env.NODE_ENV === "production") {
-  const __dirname = path.resolve();
-
   app.use(express.static(path.join(__dirname, "frontend/vite-project/dist")));
 
   app.use((req, res) => {
