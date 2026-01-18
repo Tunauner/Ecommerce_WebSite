@@ -28,14 +28,18 @@ app.use("/api/coupon", couponroutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "frontend/vite-project/dist")));
+// SADECE PRODUCTION'DA FRONTEND SERVE ET
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
 
-app.use((req, res) => {
-  res.sendFile(
-    path.join(__dirname, "frontend/vite-project/dist", "index.html"),
-  );
-});
+  app.use(express.static(path.join(__dirname, "frontend/vite-project/dist")));
+
+  app.use((req, res) => {
+    res.sendFile(
+      path.join(__dirname, "frontend/vite-project/dist", "index.html"),
+    );
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
