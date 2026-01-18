@@ -14,6 +14,13 @@ const LoginPage = () => {
     login({ email, password });
   };
 
+  // Function to fill demo credentials
+  const fillDemoCredentials = () => {
+  setEmail("admin@outlook.com");
+  setPassword("123456");
+};
+
+
   return (
     <div className="min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-md">
@@ -91,6 +98,16 @@ const LoginPage = () => {
               </>
             )}
           </button>
+
+          {/*Demo Credentials */}
+          <button
+            type="button"
+            onClick={fillDemoCredentials}
+            className="text-sm text-gray-500 underline mt-2"
+          >
+            Fill demo credentials
+          </button>
+
         </form>
 
         {/* FOOTER */}
