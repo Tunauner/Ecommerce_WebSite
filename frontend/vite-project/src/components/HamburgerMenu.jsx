@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useUserStore } from "../stores/useUserStore";
+import { useCartStore } from "../stores/useCartStore";
 
 const categories = [
   { label: "Tops", slug: "tops" },
@@ -14,30 +16,33 @@ const categories = [
 ];
 
 const HamburgerMenu = ({ isOpen, onClose }) => {
-  const [gender, setGender] = useState("man"); //  default MAN
+  const [gender, setGender] = useState("man"); // default MAN
+  const { user, logout } = useUserStore();
+  const { cart } = useCartStore();
+  const isAdmin = user?.role === "admin";
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white">
+    <div className="fixed inset-0 z-[100] bg-white overflow-y-auto">
       {/* TOP BAR */}
-      <div className="h-20 px-8 flex items-center justify-between border-b border-gray-200">
+      <div className="h-20 px-6 flex items-center justify-between border-b border-gray-200">
         {/* GENDER SWITCH */}
-        <div className="flex gap-8 text-sm font-medium">
+        <div className="flex gap-6 text-sm font-medium">
           <button
-            onMouseEnter={() => setGender("woman")}
-            className={`${
+            onClick={() => setGender("woman")}
+            className={`pb-1 ${
               gender === "woman" ? "border-b-2 border-black" : ""
-            } pb-1`}
+            }`}
           >
             WOMAN
           </button>
 
           <button
-            onMouseEnter={() => setGender("man")}
-            className={`${
+            onClick={() => setGender("man")}
+            className={`pb-1 ${
               gender === "man" ? "border-b-2 border-black" : ""
-            } pb-1`}
+            }`}
           >
             MAN
           </button>
@@ -49,16 +54,16 @@ const HamburgerMenu = ({ isOpen, onClose }) => {
       </div>
 
       {/* CONTENT */}
-      <div className="max-w-7xl mx-auto px-12 py-14" onMouseLeave={onClose}>
-        <div className="grid grid-cols-4 gap-16 text-sm">
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-sm">
           {/* SALE */}
           <div className="text-red-600 space-y-3">
-            <p>Sale</p>
+            <p className="font-medium">Sale</p>
             <p>Up to 50% off</p>
           </div>
 
           {/* COLLECTION */}
-          <div className="col-span-2 space-y-3">
+          <div className="md:col-span-2 space-y-3">
             <h4 className="font-medium mb-2">Collection</h4>
 
             {categories.map((cat) => (
@@ -73,12 +78,60 @@ const HamburgerMenu = ({ isOpen, onClose }) => {
             ))}
           </div>
 
-          {/* INSPIRATION */}
+          {/* ACCOUNT / EXTRA */}
           <div className="space-y-3">
-            <h4 className="font-medium">Inspiration</h4>
-            <p>Licensed</p>
-            <p>STWD</p>
-            <p>Often</p>
+            <h4 className="font-medium mb-2">Account</h4>
+
+            {isAdmin && (
+              <Link
+                to="/secret-dashboard"
+                onClick={onClose}
+                className="block hover:underline"
+              >
+                Dashboard
+              </Link>
+            )}
+
+            {user && (
+              <Link
+                to="/cart"
+                onClick={onClose}
+                className="block hover:underline"
+              >
+                Cart {cart.length > 0 && `(${cart.length})`}
+              </Link>
+            )}
+
+            {!user && (
+              <>
+                <Link
+                  to="/login"
+                  onClick={onClose}
+                  className="block hover:underline"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  onClick={onClose}
+                  className="block hover:underline"
+                >
+                  Signup
+                </Link>
+              </>
+            )}
+
+            {user && (
+              <button
+                onClick={() => {
+                  logout();
+                  onClose();
+                }}
+                className="block text-left hover:underline"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </div>

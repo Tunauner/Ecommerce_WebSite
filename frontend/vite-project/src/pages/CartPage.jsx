@@ -17,7 +17,6 @@ const CartPage = () => {
     recomendedProducts,
     coupon,
   } = useCartStore();
-  
 
   useEffect(() => {
     getCartItems();
@@ -27,33 +26,34 @@ const CartPage = () => {
     getRecommendedProducts();
   }, [getRecommendedProducts]);
 
-  
-
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-6">
       {cart?.length > 0 ? (
-        <div className="flex justify-between space-x-8">
-          <div className="w-3/4 flex flex-col space-y-4 rounded-lg">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* CART ITEMS */}
+          <div className="lg:col-span-3 flex flex-col space-y-4 order-1">
             {cart.map((product) => (
               <CartItems
                 key={`${product._id}-${product.size || "nosize"}`}
                 product={product}
               />
             ))}
-            <div className="mt-24 ">
-              <RecomendedProducts recomendedProducts={recomendedProducts} />
-            </div>
           </div>
 
-          <div className="w-1/4 flex flex-col space-y-8">
+          {/* ORDER SUMMARY  */}
+          <div className="lg:col-span-1 flex flex-col space-y-6 order-2">
             <OrderSummary total={total} subTotal={subTotal} />
             <CouponComponent coupon={coupon} />
+          </div>
+
+          {/* RECOMMENDED  */}
+          <div className="lg:col-span-3 order-3">
+            <RecomendedProducts recomendedProducts={recomendedProducts} />
           </div>
         </div>
       ) : (
         <div className="min-h-[calc(100vh-96px)] flex items-center justify-center">
-          <div className="flex flex-col items-center space-y-6 text-center">
+          <div className="flex flex-col items-center space-y-6 text-center px-4">
             <ShoppingBag className="w-12 h-12 text-slate-500" />
             <p className="text-slate-600">
               Start shopping to add items to your cart
