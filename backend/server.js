@@ -15,14 +15,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Serve static files from the React frontend app
-const __dirname = path.resolve();
-
-// cloudinary config
+// body parsers
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-
 app.use(cookieParser());
+
+// api routes
 app.use("/api/auth", authroutes);
 app.use("/api/products", productroutes);
 app.use("/api/cart", cartroutes);
@@ -30,15 +28,17 @@ app.use("/api/coupon", couponroutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "frontend/vite-project/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.join(__dirname, "frontend/vite-project/dist", "index.html"),
-    );
-  });
-}
-app.listen(5000, () => {
-  console.log(`Server is running on http://localhost:` + PORT);
+// serve frontend (Vite build)
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "frontend/vite-project/dist")));
+
+app.use((req, res) => {
+  res.sendFile(
+    path.join(__dirname, "frontend/vite-project/dist", "index.html"),
+  );
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
   connectDB();
 });
