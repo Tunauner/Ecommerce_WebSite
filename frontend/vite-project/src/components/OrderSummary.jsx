@@ -34,7 +34,7 @@ const OrderSummary = ({ total, subTotal }) => {
         {coupon && isCouponApplied && (
           <div className="flex justify-between text-gray-700">
             <span>Coupon Discount</span>
-            <span className="text-red-600">- ${saves}</span>
+            <span className="text-red-600">- ${saves.toFixed(2)}</span>
           </div>
         )}
 
