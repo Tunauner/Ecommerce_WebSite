@@ -22,7 +22,7 @@ const HomePage = () => {
                          -translate-x-1/2 -translate-y-1/2
                          text-white text-4xl font-semibold tracking-wide"
           >
-            WOMAN EDITON
+            WOMAN EDITION
           </h1>
         </Link>
 
@@ -38,7 +38,7 @@ const HomePage = () => {
                          -translate-x-1/2 -translate-y-1/2
                          text-white text-4xl font-semibold tracking-wide"
           >
-             MAN EDITON
+             MAN EDITION
           </h1>
         </Link>
       </div>
